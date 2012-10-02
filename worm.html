@@ -21,8 +21,8 @@
                 if (! isArray(arr)) return null;
                 return arr[arr.length - 1];
             }
-            function containsTrue(acc, curr) {
-                return acc || curr;
+            function truthy(what) {
+                return !!what;
             }
         </script>
         <script type="text/javascript">
@@ -37,6 +37,9 @@
                             dest[prop] = p[prop];
                         }
                     }
+                };
+                Emitter.emit = function (recvr, args) {
+                    recvr.fn.apply(recvr.who, args);
                 };
                 p.subs = {};
                 p.on = function (what, fn, who) {
@@ -58,11 +61,7 @@
                 };
                 p.trigger = function (l, e) {
                     var args = Array.prototype.slice.call(arguments, 1);
-                    l.forEach(
-                        function (l) {
-                                l.fn.apply(l.who, args);
-                            }
-                        );
+                    l.forEach(function (s) { Emitter.emit(s, args); );
                 };
                 return Emitter;
             }(window, document));
@@ -356,7 +355,7 @@
                 p.hitTest = function (point) {
                     var hit = this.segments.
                         map(func("hitTest", point)).
-                        reduce(containsTrue, false);
+                        some(truthy);
                     return hit;
                 };
                 p.head = function () {
@@ -479,7 +478,7 @@
                     }
                     if (this.worm.tail().
                         map(func("hitTest", this.worm.head().pos)).
-                        reduce(containsTrue, false)
+                        some(truthy);
                     ) {
                         this.gameover();
                         return;
