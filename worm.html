@@ -625,7 +625,7 @@
                 function persistScore(score, duration, snap, nonce) {
                     var xhr = new XMLHttpRequest();
                     if (nonce == null) {
-                        xhr.open("GET", "./worm-score.php", true);
+                        xhr.open("GET", "./score.php", true);
                         xhr.onreadystatechange = function (e) {
                             var xhr = e.target,
                                 data;
@@ -641,7 +641,7 @@
                         };
                         xhr.send();
                     } else if (!!score && score > 0 && !!duration && !!nonce) {
-                        xhr.open("POST", "./worm-score.php", true);
+                        xhr.open("POST", "./score.php", true);
                         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
                         xhr.onreadystatechange = function (e) {
                             var xhr = e.target,
