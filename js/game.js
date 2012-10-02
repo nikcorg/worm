@@ -56,9 +56,6 @@ define("game", ["util", "emitter", "worm", "target", "score"], function (Util, E
             case Game.KEYCODES.DOWN:
                 e.preventDefault();
                 this.worm.setDirection(Worm.DIRECTION.DOWN);
-                if (this.worm.direction !== Worm.DIRECTION.UP) {
-
-                }
                 break;
             case Game.KEYCODES.UP:
                 e.preventDefault();
