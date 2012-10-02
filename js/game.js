@@ -55,26 +55,30 @@ define("game", ["util", "emitter", "worm", "target", "score"], function (Util, E
         switch (e.keyCode) {
             case Game.KEYCODES.DOWN:
                 e.preventDefault();
+                this.worm.setDirection(Worm.DIRECTION.DOWN);
                 if (this.worm.direction !== Worm.DIRECTION.UP) {
-                    this.worm.setDirection(Worm.DIRECTION.DOWN);
+
                 }
                 break;
             case Game.KEYCODES.UP:
                 e.preventDefault();
+                this.worm.setDirection(Worm.DIRECTION.UP);
                 if (this.worm.direction !== Worm.DIRECTION.DOWN) {
-                    this.worm.setDirection(Worm.DIRECTION.UP);
+
                 }
                 break;
             case Game.KEYCODES.LEFT:
                 e.preventDefault();
+                this.worm.setDirection(Worm.DIRECTION.LEFT);
                 if (this.worm.direction !== Worm.DIRECTION.RIGHT) {
-                    this.worm.setDirection(Worm.DIRECTION.LEFT);
+
                 }
                 break;
             case Game.KEYCODES.RIGHT:
                 e.preventDefault();
+                this.worm.setDirection(Worm.DIRECTION.RIGHT);
                 if (this.worm.direction !== Worm.DIRECTION.LEFT) {
-                    this.worm.setDirection(Worm.DIRECTION.RIGHT);
+
                 }
                 break;
             case Game.KEYCODES.SPACE:

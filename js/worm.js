@@ -14,11 +14,11 @@ define("worm", ["util", "segment", "point"], function (Util, Segment, Point) {
     var p = Worm.prototype;
     p.canvas = null;
     p.direction = Worm.DIRECTION.LEFT;
+    p.directionNext = null;
     p.speed = 1;
     p.length = 1;
     p.segments = [];
     p.segmentQueue = [];
-    p.directionChangeAllowed = true;
     p.init = function () {
         var firstSegment = new Segment(this.canvas),
             x = Math.random() * this.canvas.dims.w / Segment.width,
@@ -31,14 +31,25 @@ define("worm", ["util", "segment", "point"], function (Util, Segment, Point) {
         this.grow(2);
     };
     p.setDirection = function (d) {
-        // Hack to allow dir change only once per tick,
-        // preventing turning into yourself when doing
-        // a quick 180° turn
-        if (this.directionChangeAllowed) {
-            this.direction = d;
-            this.directionChangeAllowed = false;
-        }
+        this.directionNext = d;
         return this;
+    };
+    p.nullIfOpposite = function (d) {
+        switch (d) {
+            case Worm.DIRECTION.UP:
+                return this.direction === Worm.DIRECTION.DOWN ? null : d;
+
+            case Worm.DIRECTION.DOWN:
+                return this.direction === Worm.DIRECTION.UP ? null : d;
+
+            case Worm.DIRECTION.LEFT:
+                return this.direction === Worm.DIRECTION.RIGHT ? null : d;
+
+            case Worm.DIRECTION.RIGHT:
+                return this.direction === Worm.DIRECTION.LEFT ? null : d;
+        }
+
+        return null;
     };
     p.move = function () {
         var newSegment, lastPos = Util.last(this.segments).pos.clone();
@@ -52,6 +63,11 @@ define("worm", ["util", "segment", "point"], function (Util, Segment, Point) {
                 this.segments.unshift(
                     this.segments.pop().setPos(this.head().pos.clone())
                     );
+            }
+            // Validate direction change if one is queued
+            if (!!this.directionNext) {
+                this.direction = this.nullIfOpposite(this.directionNext) || this.direction;
+                this.directionNext = null;
             }
             // Move head segment
             switch (this.direction) {
@@ -81,8 +97,6 @@ define("worm", ["util", "segment", "point"], function (Util, Segment, Point) {
                 this.head().pos.x = 0;
             }
         }
-        // Reset direction change allowing flag
-        this.directionChangeAllowed = true;
         return this;
     };
     p.hitTest = function (point) {
