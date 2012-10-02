@@ -1,6 +1,7 @@
 <?php
 session_start();
-$scores = file("./worm-scores.txt", FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+define("OUTFILE", __DIR__ . "/.scores");
+$scores = file(OUTFILE, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
 function calcChecksum($str) {
     $i = 0;
     $l = strlen($str);
@@ -43,7 +44,7 @@ if (isset($_POST["nonce"]) &&
             ));
         natsort($scores);
         $scores = array_reverse($scores);
-        file_put_contents("worm-scores.txt", implode(PHP_EOL, $scores));
+        file_put_contents(OUTFILE, implode(PHP_EOL, $scores));
     }
 }
 header("Content-Type: application/json");
