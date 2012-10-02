@@ -1,4 +1,5 @@
-var Target = (function (w, d) {
+/*global define: true*/
+define("target", ["canvas", "point", "rectangle"], function (Canvas, Point, Rectangle) {
     function Target(canvas) {
         this.canvas = canvas;
         this.randomize();
@@ -36,4 +37,4 @@ var Target = (function (w, d) {
         return this.rect.contains(point);
     };
     return Target;
-}(window, document));
+});

@@ -1,4 +1,5 @@
-var Worm = (function (w, d) {
+/*global define: true*/
+define("worm", ["util", "segment", "point"], function (Util, Segment, Point) {
     function Worm(canvas) {
         this.canvas = canvas;
         this.init();
@@ -40,7 +41,7 @@ var Worm = (function (w, d) {
         return this;
     };
     p.move = function () {
-        var newSegment, lastPos = last(this.segments).pos.clone();
+        var newSegment, lastPos = Util.last(this.segments).pos.clone();
         if (this.segments.length > 0) {
             // Replace head-segment with new segment or tail
             if (this.segmentQueue.length > 0) {
@@ -86,8 +87,8 @@ var Worm = (function (w, d) {
     };
     p.hitTest = function (point) {
         var hit = this.segments.
-            map(func("hitTest", point)).
-            some(truthy);
+            map(Util.func("hitTest", point)).
+            some(Util.truthy);
         return hit;
     };
     p.head = function () {
@@ -103,8 +104,8 @@ var Worm = (function (w, d) {
         return this;
     };
     p.draw = function () {
-        this.segments.forEach(func("draw"));
+        this.segments.forEach(Util.func("draw"));
         return this;
     };
     return Worm;
-}(window, document));
+});

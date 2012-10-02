@@ -1,4 +1,7 @@
-var Canvas = (function (w, d) {
+/*global define: true*/
+define("canvas", ["emitter"], function (Emitter) {
+    var w = window, d = document;
+
     var requestAnimFrame = (function(){
             return window.requestAnimationFrame ||
                 window.webkitRequestAnimationFrame ||
@@ -82,4 +85,4 @@ var Canvas = (function (w, d) {
         this.applyOptions(restore);
     };
     return Canvas;
-}(window, document));
+});

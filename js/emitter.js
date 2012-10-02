@@ -1,4 +1,6 @@
-var Emitter = (function (w, d) {
+/*global define: true*/
+define("emitter", function () {
+    var w = window, d = document;
     function Emitter() {
     }
     var p = Emitter.prototype;
@@ -36,4 +38,4 @@ var Emitter = (function (w, d) {
         l.forEach(function (s) { Emitter.emit(s, args); });
     };
     return Emitter;
-}(window, document));
+});

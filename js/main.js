@@ -1,4 +1,7 @@
-(function (w, d) {
+/*global require: true*/
+require(["canvas", "game"], function (Canvas, Game){
+    var w = window, d = document;
+
     function renderToplist(data) {
         var container = d.querySelector(".toplist ol");
         while (container.firstChild !== null) {
@@ -112,4 +115,4 @@
             },
         false
         );
-}(window, document));
+});

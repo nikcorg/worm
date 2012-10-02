@@ -1,4 +1,6 @@
-var Game = (function (w, d) {
+/*global define: true*/
+define("game", ["util", "emitter", "worm", "target", "score"], function (Util, Emitter, Worm, Target, Score) {
+    var w = window, d = document;
     function Game(canvas) {
         this.canvas = canvas;
         this.canvas.on("tick", this.tick, this);
@@ -35,8 +37,8 @@ var Game = (function (w, d) {
             } while (this.worm.hitTest(this.target.pos));
         }
         if (this.worm.tail().
-            map(func("hitTest", this.worm.head().pos)).
-            some(truthy)
+            map(Util.func("hitTest", this.worm.head().pos)).
+            some(Util.truthy)
         ) {
             this.gameover();
             return;
@@ -45,10 +47,10 @@ var Game = (function (w, d) {
         this.canvas.fill();
         // Redrawing everything on every tick is terribly wasteful,
         // but we don't care right now.
-        this.elems.map(func("draw"));
+        this.elems.map(Util.func("draw"));
     };
     p.keydown = function (e) {
-        if (! "keyCode" in e || (this.paused && e.keyCode !== Game.KEYCODES.SPACE)) return;
+        if (! ("keyCode" in e) || (this.paused && e.keyCode !== Game.KEYCODES.SPACE)) { return; }
         switch (e.keyCode) {
             case Game.KEYCODES.DOWN:
                 e.preventDefault();
@@ -121,4 +123,4 @@ var Game = (function (w, d) {
         }
     };
     return Game;
-}(window, document));
+});

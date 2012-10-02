@@ -1,4 +1,6 @@
-var Segment = (function (w, d) {
+
+/*global define: true*/
+define("segment", ["canvas", "point", "rectangle"], function (Canvas, Point, Rectangle) {
     function Segment(canvas) {
         this.canvas = canvas;
         this.rect = new Rectangle(null, Segment.width, Segment.height);
@@ -25,4 +27,4 @@ var Segment = (function (w, d) {
         return this;
     };
     return Segment;
-}(window, document));
+});

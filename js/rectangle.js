@@ -1,22 +1,5 @@
-var Point = (function (w, d) {
-    function Point(x, y) {
-        this.x = x || this.x;
-        this.y = y || this.y;
-    }
-    var p = Point.prototype;
-    p.x = 0;
-    p.y = 0;
-    p.clone = function () {
-        return new Point(this.x, this.y);
-    };
-    p.cloneInto = function (o) {
-        o.x = this.x;
-        o.y = this.y;
-    };
-    return Point;
-}(window, document));
-
-var Rectangle = (function (w, d) {
+/*global define: true*/
+define("rectangle", function () {
     function Rectangle(point, width, height) {
         this.pos = point;
         this.width = width;
@@ -35,4 +18,4 @@ var Rectangle = (function (w, d) {
         return this;
     };
     return Rectangle;
-}(window, document));
+});
