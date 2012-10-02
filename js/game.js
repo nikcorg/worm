@@ -1,6 +1,7 @@
 /*global define: true*/
 define("game", ["util", "emitter", "worm", "target", "score"], function (Util, Emitter, Worm, Target, Score) {
     var w = window, d = document;
+
     function Game(canvas) {
         this.canvas = canvas;
         this.canvas.on("tick", this.tick, this);
