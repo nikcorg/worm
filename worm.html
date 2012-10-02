@@ -61,7 +61,7 @@
                 };
                 p.trigger = function (l, e) {
                     var args = Array.prototype.slice.call(arguments, 1);
-                    l.forEach(function (s) { Emitter.emit(s, args); );
+                    l.forEach(function (s) { Emitter.emit(s, args); });
                 };
                 return Emitter;
             }(window, document));
@@ -478,7 +478,7 @@
                     }
                     if (this.worm.tail().
                         map(func("hitTest", this.worm.head().pos)).
-                        some(truthy);
+                        some(truthy)
                     ) {
                         this.gameover();
                         return;
