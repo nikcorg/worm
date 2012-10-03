@@ -17,7 +17,7 @@ define("target", ["canvas", "point", "rectangle"], function (Canvas, Point, Rect
     p.value = 0;
     p.timebonus = 3;
     p.reduceBonus = function () {
-        this.timebonus *= 0.99;
+        this.timebonus *= 0.95;
     };
     p.getValue = function () {
         return this.value * Math.max(1, (this.timebonus *= 0.99));
