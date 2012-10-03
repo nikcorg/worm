@@ -23,17 +23,30 @@ define("util", function (){
     function truthy(what) {
         return !!what;
     }
+    function within(lower, upper, value) {
+        return Math.max(upper, Math.min(lower, value));
+    }
+    function curry(ctx, fn) {
+        var rest = Array.prototype.slice.call(arguments, 2);
+        return function () {
+            var args = rest.concat(Array.prototype.slice.call(arguments, 0));
+            return fn.apply(ctx, args);
+        };
+    }
     function relativeformat(when) {
         var now = Date.now(),
             diff = (now - when.getTime()) / 1000,
             thresholds = [
-                { limit: 3600, suffix: "minutes ago", div: 60 },
-                { limit: 86400, suffix: "hours ago", div: 3600 }
+                { limit: 60, suffix: ["minutes ago", "minute ago", "minutes ago"], div: 60 },
+                { limit: 24, suffix: ["hours ago", "hour ago", "hours ago"], div: 3600 },
+                { limit: 7, suffix: ["days ago", "day ago", "days ago"], div: 86400 }
                 ],
-            t;
+            limit = curry(null, within, 0, 2),
+            t, v;
         while (!!(t = thresholds.shift())) {
-            if (diff < t.limit) {
-                return Math.round(diff / t.div) + " " + t.suffix;
+            v = Math.round(diff / t.div);
+            if (v < t.limit) {
+                return v + " " + t.suffix[limit(v)];
             }
         }
         return "on " + when.toLocaleString();
@@ -44,6 +57,8 @@ define("util", function (){
         prop: func,
         last: last,
         truthy: truthy,
-        relativeformat: relativeformat
+        within: within,
+        relativeformat: relativeformat,
+        curry: curry
     };
 });
