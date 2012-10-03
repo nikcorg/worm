@@ -8,7 +8,7 @@
             version = "0.0.3";
             requirejs.config({
                 "baseUrl": "js",
-                "urlArgs": "v=" + version
+                "urlArgs": "v=" + version // Break out from cache
             });
             require(["main"], function (App) {
                 App.init();
