@@ -1,5 +1,5 @@
 /*global define: true*/
-define("main", ["canvas", "game"], function (Canvas, Game) {
+define("main", ["util", "canvas", "game"], function (Util, Canvas, Game) {
     var w = window, d = document;
 
     function renderToplist(data) {
@@ -11,14 +11,16 @@ define("main", ["canvas", "game"], function (Canvas, Game) {
             var points = parseInt(score[0], 10),
                 duration = parseInt(score[1], 10) / 1000,
                 when = new Date(parseInt(score[2], 10)),
+                name = score[4] || "Anonymous",
                 li = d.createElement("li"),
                 txt = d.createTextNode(
+                    name + " scored " +
                     points + " points in " +
-                    duration + " seconds on " +
-                    when.toLocaleString()
+                    duration + " seconds " +
+                    Util.relativeformat(when)
                     ),
                 snap;
-            if (score.length === 4) {
+            if (score.length >= 4) {
                 snap = document.createElement("a");
                 snap.setAttribute("href", score[3]);
                 snap.setAttribute("title", "Screenshot of Game Over screen for this game");
@@ -57,7 +59,7 @@ define("main", ["canvas", "game"], function (Canvas, Game) {
                 );
         return qs + "&cs=" + String(cs);
     }
-    function persistScore(score, duration, snap, nonce) {
+    function persistScore(name, score, duration, snap, nonce) {
         var xhr = new XMLHttpRequest();
         if (nonce == null) {
             xhr.open("GET", "./score.php", true);
@@ -69,7 +71,7 @@ define("main", ["canvas", "game"], function (Canvas, Game) {
                         data = JSON.parse(xhr.responseText);
                         renderToplist(data.scores);
                         if ("nonce" in data) {
-                            persistScore(score, duration, snap, data.nonce);
+                            persistScore(name, score, duration, snap, data.nonce);
                         }
                     } catch (x) {}
                 }
@@ -90,27 +92,47 @@ define("main", ["canvas", "game"], function (Canvas, Game) {
             };
             xhr.send(appendChecksum(compileQueryString({
                 duration: duration,
+                name: name,
                 nonce: nonce,
                 score: score,
                 snap: snap || ""
                 })));
         }
     }
-
+    function persistNickname(name) {
+        localStorage.setItem("nickname", name);
+    }
     function init() {
+        var nameinput,
+            game;
+
         w.addEventListener(
             "load",
             function () {
-                    var g = new Game(new Canvas(640, 480, 15));
-                    g.canvas.attach(d.querySelector(".canvasContainer"), true);
-                    g.on(
+                    game = new Game(new Canvas(640, 480, 15));
+
+                    nameinput = d.querySelector("input[name=nick]");
+
+                    if (!!localStorage["nickname"]) {
+                        nameinput.value = localStorage["nickname"];
+                    }
+
+                    game.canvas.attach(d.querySelector(".canvasContainer"), true);
+                    game.on(
                         "gameover",
                         function (evt, game) {
+                            var name = nameinput.value;
                             persistScore(
+                                name || "Anonymous",
                                 game.score.score,
                                 game.duration,
                                 game.canvas.cnv.toDataURL("image/png")
                                 );
+
+                            if (!!name) {
+                                localStorage["nickname"] = name;
+                            }
+
                             }
                         );
                     persistScore(-1);
