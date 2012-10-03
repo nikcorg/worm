@@ -5,7 +5,7 @@
         <title>Worm!</title>
         <script src="jam/require.js"></script>
         <script>
-            version = "0.0.3";
+            version = "0.0.7";
             requirejs.config({
                 "baseUrl": "js",
                 "urlArgs": "v=" + version // Break out from cache
@@ -18,6 +18,7 @@
     </head>
     <body>
         <h1>Worm!</h1>
+        <p><input type="text" name="nick" placeholder="Your name for the high scores table" focus></p>
         <div class="canvasContainer"><p>Loading, please wait...</p></div>
         <p>Use arrow keys to steer, spacebar to (un)pause</p>
         <p>Edges wrap, hitting the body ends the game.</p>
