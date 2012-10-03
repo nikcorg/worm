@@ -1,5 +1,6 @@
 body {
-    background-color: #000;
+    background-color: #ccc;
+    background-color: rgba(0, 0, 0, 0.6);
     color: #fff;
     font-family: sans-serif;
     width: 640px;
