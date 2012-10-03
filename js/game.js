@@ -30,9 +30,11 @@ define("game", ["util", "emitter", "worm", "target", "score"], function (Util, E
     p.started = 0;
     p.duration = 0;
     p.tick = function () {
+        var tval;
         if (this.worm.head().hitTest(this.target.pos)) {
-            this.worm.grow(this.target.value);
-            this.score.inc(this.target.value * 10);
+            tval = Math.round(this.target.getValue());
+            this.worm.grow(tval);
+            this.score.inc(tval * 10);
             do {
                 this.target.randomize();
             } while (this.worm.hitTest(this.target.pos));

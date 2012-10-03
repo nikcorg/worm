@@ -3,6 +3,7 @@ define("target", ["canvas", "point", "rectangle"], function (Canvas, Point, Rect
     function Target(canvas) {
         this.canvas = canvas;
         this.randomize();
+        this.canvas.on("tick", this.reduceBonus, this);
     }
     Target.height = 10;
     Target.width = 10;
@@ -14,10 +15,18 @@ define("target", ["canvas", "point", "rectangle"], function (Canvas, Point, Rect
     p.cache = null;
     p.canvas = null;
     p.value = 0;
+    p.timebonus = 2;
+    p.reduceBonus = function () {
+        this.timebonus = Math.max(1, (this.timebonus *= 0.99));
+    };
+    p.getValue = function () {
+        return this.value * this.timebonus;
+    };
     p.randomize = function () {
         var x = Math.random() * this.canvas.dims.w / Target.width,
             y = Math.random() * this.canvas.dims.h / Target.height;
         this.value = Math.ceil(Math.random() * 10);
+        this.timebonus = 2;
         this.pos = new Point(
             Math.floor(x) * Target.width,
             Math.floor(y) * Target.height
@@ -29,7 +38,11 @@ define("target", ["canvas", "point", "rectangle"], function (Canvas, Point, Rect
         this.canvas.draw(
             Target.cache,
             this.pos.x,
-            this.pos.y
+            this.pos.y,
+            {
+                shadowColor: "#FFF",
+                shadowBlur: (this.timebonus - 1) * 15
+                }
             );
         return this;
     };
