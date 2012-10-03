@@ -23,12 +23,30 @@ define("util", function (){
     function truthy(what) {
         return !!what;
     }
-
+    function relativeformat(when) {
+        var now = Date.now(),
+            diff = (now - when.getTime()) / 1000,
+            thresholds = [
+                { limit: 3600, suffix: "minutes ago", div: 60 },
+                { limit: 86400, suffix: "hours ago", div: 3600 }
+                ],
+            t;
+console.log("relative format", when, diff);
+        while (!!(t = thresholds.shift())) {
+console.log(t);
+            if (diff < t.limit) {
+                return Math.round(diff / t.div) + " " + t.suffix;
+            }
+        }
+console.log("no suitable match");
+        return "on " + when.toLocaleString();
+    }
     return {
         isArray: isArray,
         func: func,
         prop: func,
         last: last,
-        truthy: truthy
+        truthy: truthy,
+        relativeformat: relativeformat
     };
 });
