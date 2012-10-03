@@ -24,7 +24,7 @@ define("util", function (){
         return !!what;
     }
     function within(lower, upper, value) {
-        return Math.max(upper, Math.min(lower, value));
+        return Math.min(upper, Math.max(lower, value));
     }
     function curry(ctx, fn) {
         var rest = Array.prototype.slice.call(arguments, 2);
@@ -37,16 +37,16 @@ define("util", function (){
         var now = Date.now(),
             diff = (now - when.getTime()) / 1000,
             thresholds = [
-                { limit: 60, div:    60, suffix: ["minutes ago", "minute ago", "minutes ago"] },
-                { limit: 24, div:  3600, suffix: ["hours ago", "hour ago", "hours ago"] },
-                { limit:  7, div: 86400, suffix: ["days ago", "day ago", "days ago"] }
+                { limit: 60, div:    60, fmt: ["just now", "%d minute ago", "%d minutes ago"] },
+                { limit: 24, div:  3600, fmt: ["about an hour ago", "%d hour ago", "%d hours ago"] },
+                { limit:  7, div: 86400, fmt: ["today", "yesterday", "%d days ago"] }
                 ],
             limit = curry(null, within, 0, 2),
             t, v;
         while (!!(t = thresholds.shift())) {
-            v = Math.round(diff / t.div);
+            v = Math.floor(diff / t.div);
             if (v < t.limit) {
-                return v + " " + t.suffix[limit(v)];
+                return t.fmt[limit(v)].replace(/%d/g, v);
             }
         }
         return "on " + when.toLocaleString();
