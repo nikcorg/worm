@@ -1,8 +1,10 @@
 <?php
 session_start();
 define("OUTFILE", __DIR__ . "/.scores");
+define("SNAPS_FS", __DIR__ . "/snaps");
+define("SNAPS_WEB", "snaps");
 $scores = file(OUTFILE, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
-function calcChecksum($str) {
+function checksum($str) {
     $i = 0;
     $l = strlen($str);
     $cs = 0;
@@ -11,9 +13,16 @@ function calcChecksum($str) {
     }
     return $cs;
 }
-if (isset($_POST["nonce"]) &&
-    isset($_SESSION["nonce"]) &&
-    isset($_SESSION["nonce_expires"]) &&
+function require_in($cn, $vars) {
+    foreach ($vars as $nm) {
+        if (! isset($cn[$nm])) {
+            return false;
+        }
+    }
+    return true;
+}
+if (require_in($_POST, array("name", "nonce", "score", "duration")) &&
+    require_in($_SESSION, array("nonce", "nonce_expires")) &&
     $_SESSION["nonce_expires"] > time() &&
     $_SESSION["nonce"] === $_POST["nonce"] &&
     intval($_POST["score"]) > 0
@@ -21,26 +30,29 @@ if (isset($_POST["nonce"]) &&
     unset($_SESSION["nonce"]);
     unset($_SESSION["nonce_expires"]);
     $qs = sprintf(
-        "duration=%d&nonce=%s&score=%d&snap=%s",
+        "duration=%d&name=%s&nonce=%s&score=%d&snap=%s",
         urlencode(intval($_POST["duration"])),
+        urlencode($_POST["name"]),
         urlencode($_POST["nonce"]),
         urlencode(intval($_POST["score"])),
         urlencode($_POST["snap"])
         );
-    $cs = calcChecksum($qs);
+    $cs = checksum($qs);
     if ($cs === intval($_POST["cs"])) {
         list($meta, $snapdata) = explode(",", $_POST["snap"], 2);
         if ($img = imagecreatefromstring(base64_decode($snapdata))) {
-            $snapfile = "snaps/" . $_POST["nonce"] . ".jpg";
-            if (! imagejpeg($img, $snapfile)) {
-                $snapfile = null;
+            $snap_fs = sprintf("%s/%s.jpg", SNAPS_FS, $_POST["nonce"]);
+            $snap_web = sprintf("%s/%s", SNAPS_WEB, basename($snap_fs));
+            if (! imagejpeg($img, $snap_fs)) {
+                $snap_web = null;
             }
         }
         $scores[] = implode("|", array(
-            $_POST["score"],
-            $_POST["duration"],
+            intval($_POST["score"]),
+            floatval($_POST["duration"]),
             time() * 1000,
-            $snapfile
+            $snap_web,
+            str_replace("/[^[:alnum:]-_ ]/", "", $_POST["name"])
             ));
         natsort($scores);
         $scores = array_reverse($scores);
@@ -55,7 +67,7 @@ echo json_encode(array(
         "nonce" => $nonce,
         "scores" => array_map(
             function ($s) {
-                return explode("|", $s, 4);
+                return explode("|", $s, 5);
                 },
             array_slice($scores, 0, 20)
             )
