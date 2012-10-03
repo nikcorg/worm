@@ -48,7 +48,12 @@ define("canvas", ["emitter"], function (Emitter) {
     p.stopTick = function () {
         this.ticking = false;
     };
-    p.attach = function (node) {
+    p.attach = function (node, clear) {
+        if (!!clear) {
+            while (node.firstChild !== null) {
+                node.removeChild(node.firstChild);
+            }
+        }
         node.appendChild(this.cnv);
         this.startTick();
     };
