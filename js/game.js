@@ -81,6 +81,10 @@ define("game", ["util", "emitter", "worm", "target", "score"], function (Util, E
     p.gameover = function () {
         this.ended = true;
         this.canvas.off("tick", this.tick, this);
+        // Redraw with bgcolor for screenshot
+        this.canvas.fill();
+        this.elems.map(Util.func("draw"));
+        // Draw game over text
         this.canvas.applyOptions({
             font: "90px Courier",
             fillStyle: "#FFF",
