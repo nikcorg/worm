@@ -37,9 +37,9 @@ define("util", function (){
         var now = Date.now(),
             diff = (now - when.getTime()) / 1000,
             thresholds = [
-                { limit: 60, suffix: ["minutes ago", "minute ago", "minutes ago"], div: 60 },
-                { limit: 24, suffix: ["hours ago", "hour ago", "hours ago"], div: 3600 },
-                { limit: 7, suffix: ["days ago", "day ago", "days ago"], div: 86400 }
+                { limit: 60, div:    60, suffix: ["minutes ago", "minute ago", "minutes ago"] },
+                { limit: 24, div:  3600, suffix: ["hours ago", "hour ago", "hours ago"] },
+                { limit:  7, div: 86400, suffix: ["days ago", "day ago", "days ago"] }
                 ],
             limit = curry(null, within, 0, 2),
             t, v;
