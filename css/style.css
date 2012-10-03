@@ -25,3 +25,6 @@ a:hover {
 a:active {
     color: #f00;
 }
+input {
+    width: 640px;
+}
