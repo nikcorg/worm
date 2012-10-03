@@ -100,7 +100,7 @@ require(["canvas", "game"], function (Canvas, Game){
         "load",
         function () {
                 var g = new Game(new Canvas(640, 480, 15));
-                g.canvas.attach(d.querySelector(".canvasContainer"));
+                g.canvas.attach(d.querySelector(".canvasContainer"), true);
                 g.on(
                     "gameover",
                     function (evt, game) {
