@@ -31,7 +31,7 @@ define("caps", ["util"], function (Util) {
         return passed;
     }
     function satisfy(caps, success) {
-        var satisfied = false;//exists(caps);
+        var satisfied = exists(caps);
 
         if (! satisfied) {
             throw new Error("not satisfactory");
