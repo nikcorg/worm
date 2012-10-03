@@ -15,18 +15,18 @@ define("target", ["canvas", "point", "rectangle"], function (Canvas, Point, Rect
     p.cache = null;
     p.canvas = null;
     p.value = 0;
-    p.timebonus = 2;
+    p.timebonus = 3;
     p.reduceBonus = function () {
-        this.timebonus = Math.max(1, (this.timebonus *= 0.99));
+        this.timebonus *= 0.99;
     };
     p.getValue = function () {
-        return this.value * this.timebonus;
+        return this.value * Math.max(1, (this.timebonus *= 0.99));
     };
     p.randomize = function () {
         var x = Math.random() * this.canvas.dims.w / Target.width,
             y = Math.random() * this.canvas.dims.h / Target.height;
         this.value = Math.ceil(Math.random() * 10);
-        this.timebonus = 2;
+        this.timebonus = 3;
         this.pos = new Point(
             Math.floor(x) * Target.width,
             Math.floor(y) * Target.height
