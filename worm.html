@@ -10,9 +10,6 @@
                 "baseUrl": "js",
                 "urlArgs": "v=" + version // Break out from cache
             });
-            require(["main"], function (App) {
-                App.init();
-            });
         </script>
         <link rel="stylesheet" href="css/style.css">
     </head>
@@ -25,5 +22,24 @@
         <p>Reload page to restart game.</p>
         <div class="toplist" hidden><h2>High scores</h2><ol></ol></div>
         <p><i>Disclaimer:</i> Because this is just a PoC, there are no checks for supported tech in your browser and this game is not guaranteed to work anywhere. (But in a recent browser there are no reasons why it wouldn't.)</p>
+        <script>
+            require(["caps"], function (Caps) {
+                try {
+                    Caps.satisfy(
+                        ["Canvas", "Canvas.fillText", "Array.map", "Array.forEach", "Array.some", "Array.reduce", "classList", "querySelector"],
+                        function () {
+                            var app = require(["main"], function (app) {;
+                                app.init();
+                                });
+                            }
+                        );
+                } catch (e) {
+                    var nodes = document.getElementsByClassName("canvasContainer");
+                    if (nodes.length > 0) {
+                        nodes[0].innerHTML = "looks like your browser isn't compatible.";
+                    }
+                }
+            });
+        </script>
     </body>
 </html>
