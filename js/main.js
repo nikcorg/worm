@@ -1,5 +1,5 @@
-/*global require: true*/
-require(["canvas", "game"], function (Canvas, Game){
+/*global define: true*/
+define("main", ["canvas", "game"], function (Canvas, Game) {
     var w = window, d = document;
 
     function renderToplist(data) {
@@ -96,23 +96,28 @@ require(["canvas", "game"], function (Canvas, Game){
                 })));
         }
     }
-    w.addEventListener(
-        "load",
-        function () {
-                var g = new Game(new Canvas(640, 480, 15));
-                g.canvas.attach(d.querySelector(".canvasContainer"), true);
-                g.on(
-                    "gameover",
-                    function (evt, game) {
-                        persistScore(
-                            game.score.score,
-                            game.duration,
-                            game.canvas.cnv.toDataURL("image/png")
-                            );
-                        }
-                    );
-                persistScore(-1);
-            },
-        false
-        );
+
+    function init() {
+        w.addEventListener(
+            "load",
+            function () {
+                    var g = new Game(new Canvas(640, 480, 15));
+                    g.canvas.attach(d.querySelector(".canvasContainer"), true);
+                    g.on(
+                        "gameover",
+                        function (evt, game) {
+                            persistScore(
+                                game.score.score,
+                                game.duration,
+                                game.canvas.cnv.toDataURL("image/png")
+                                );
+                            }
+                        );
+                    persistScore(-1);
+                },
+            false
+            );
+    }
+
+    return { init: init };
 });

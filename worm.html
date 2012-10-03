@@ -3,8 +3,17 @@
     <head>
         <meta charset="utf-8">
         <title>Worm!</title>
-        <script src="jam/require.js" data-main="js/main"></script>
-        <script>requirejs.config({'urlArgs': "bust=" +  (new Date()).getTime()});</script>
+        <script src="jam/require.js"></script>
+        <script>
+            version = "0.0.3";
+            requirejs.config({
+                "baseUrl": "js",
+                "urlArgs": "v=" + version
+            });
+            require(["main"], function (App) {
+                App.init();
+            });
+        </script>
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
