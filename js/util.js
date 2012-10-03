@@ -31,14 +31,11 @@ define("util", function (){
                 { limit: 86400, suffix: "hours ago", div: 3600 }
                 ],
             t;
-console.log("relative format", when, diff);
         while (!!(t = thresholds.shift())) {
-console.log(t);
             if (diff < t.limit) {
                 return Math.round(diff / t.div) + " " + t.suffix;
             }
         }
-console.log("no suitable match");
         return "on " + when.toLocaleString();
     }
     return {
