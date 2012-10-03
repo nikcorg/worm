@@ -47,7 +47,8 @@ define("game", ["util", "emitter", "worm", "target", "score"], function (Util, E
             return;
         }
         this.worm.move();
-        this.canvas.fill();
+        //this.canvas.fill();
+        this.canvas.clear();
         // Redrawing everything on every tick is terribly wasteful,
         // but we don't care right now.
         this.elems.map(Util.func("draw"));
