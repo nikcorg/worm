@@ -2,6 +2,12 @@
 define("main", ["util", "canvas", "game"], function (Util, Canvas, Game) {
     var w = window, d = document;
 
+    function readableDuration(duration) {
+        var minutes = Math.floor(duration / 60),
+            seconds = Math.round(duration - (minutes * 60));
+
+        return minutes + "m " + seconds + "s";
+    }
     function renderToplist(data) {
         var container = d.querySelector(".toplist ol");
         while (container.firstChild !== null) {
@@ -16,7 +22,7 @@ define("main", ["util", "canvas", "game"], function (Util, Canvas, Game) {
                 txt = d.createTextNode(
                     name + " scored " +
                     points + " points in " +
-                    duration + " seconds " +
+                    readableDuration(duration) + " " +
                     Util.relativeformat(when)
                     ),
                 snap;
