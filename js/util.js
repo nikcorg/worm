@@ -39,7 +39,7 @@ define("util", function (){
             thresholds = [
                 { limit: 60, div:    60, fmt: ["just now", "%d minute ago", "%d minutes ago"] },
                 { limit: 24, div:  3600, fmt: ["about an hour ago", "%d hour ago", "%d hours ago"] },
-                { limit:  7, div: 86400, fmt: ["today", "yesterday", "%d days ago"] }
+                { limit:  7, div: 86400, fmt: ["less than a day ago", "one day ago", "%d days ago"] }
                 ],
             limit = curry(null, within, 0, 2),
             t, v;
