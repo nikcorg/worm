@@ -9,7 +9,6 @@ function checksum_is_valid($cs) {
     $rest = preg_split("//", substr($cs, 0, -1), -1, PREG_SPLIT_NO_EMPTY);
     $sum = array_sum($rest);
     $ret = substr($sum, -1, 1) === $check;
-error_log($ret ? "valid checksum" : "invalid checksum: " . $cs);
     return $ret;
 }
 function checksum($str) {
@@ -67,8 +66,6 @@ if (require_in($_POST, array("name", "nonce", "score", "duration", "cs")) &&
         natsort($scores);
         $scores = array_reverse($scores);
         file_put_contents(OUTFILE, implode(PHP_EOL, $scores));
-    } else {
-        error_log("cs mismatch " . $cs . ", " . $_POST["cs"]);
     }
 }
 header("Content-Type: application/json");
