@@ -69,7 +69,7 @@ if (require_in($_POST, array("name", "nonce", "score", "duration", "cs")) &&
     }
 }
 header("Content-Type: application/json");
-$nonce = sha1(time() + mt_rand());
+$nonce = sha1(uniqid() + time() + mt_rand());
 $_SESSION["nonce"] = $nonce;
 $_SESSION["nonce_expires"] = time() + (30 * 1000);
 echo json_encode(array(
