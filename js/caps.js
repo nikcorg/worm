@@ -17,8 +17,8 @@ define("caps", ["util"], function (Util) {
                 "Array.map": has(Array.prototype, "map"),
                 "Array.reduce": has(Array.prototype, "reduce"),
                 "Array.some": has(Array.prototype, "some"),
-                "Canvas": isset(canvas),
-                "Canvas.fillText": isset(canvas) && has(canvas.getContext("2d"), "fillText"),
+                "Canvas": isset(canvas) && has(canvas, "getContext"),
+                "Canvas.fillText": isset(canvas) && has(canvas, "getContext") && has(canvas.getContext("2d"), "fillText"),
                 "classList": has(div, "classList"),
                 "querySelector": has(document, "querySelector")
             };
