@@ -50,13 +50,25 @@ define("main", ["util", "canvas", "game"], function (Util, Canvas, Game) {
                 join("&");
     }
     function appendChecksum(qs) {
-        var cs = qs.split("").
+        var cs;
+        // Calc checksum
+        cs = qs.split("").
             reduce(
                 function (acc, curr) {
                     return acc + curr.charCodeAt(0);
                     },
                 0
                 );
+        // Append check bit
+        cs += String(cs).split("").
+            reduce(
+                function (acc, curr) {
+                    return acc + parseInt(curr, 10);
+                    },
+                0
+                ).
+            toString().
+            substr(-1, 1);
         return qs + "&cs=" + String(cs);
     }
     function persistScore(name, score, duration, snap, nonce) {

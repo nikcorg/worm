@@ -4,6 +4,14 @@ define("OUTFILE", __DIR__ . "/.scores");
 define("SNAPS_FS", __DIR__ . "/snaps");
 define("SNAPS_WEB", "snaps");
 $scores = file(OUTFILE, FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
+function checksum_is_valid($cs) {
+    $check = substr($cs, -1, 1);
+    $rest = preg_split("//", substr($cs, 0, -1), -1, PREG_SPLIT_NO_EMPTY);
+    $sum = array_sum($rest);
+    $ret = substr($sum, -1, 1) === $check;
+error_log($ret ? "valid checksum" : "invalid checksum: " . $cs);
+    return $ret;
+}
 function checksum($str) {
     $i = 0;
     $l = strlen($str);
@@ -11,7 +19,8 @@ function checksum($str) {
     for (; $i < $l; $i++) {
         $cs += ord($str{$i});
     }
-    return $cs;
+    $cs .= substr(array_sum(preg_split("//", $cs, -1, PREG_SPLIT_NO_EMPTY)), -1, 1);
+    return intval($cs);
 }
 function require_in($cn, $vars) {
     foreach ($vars as $nm) {
@@ -21,8 +30,9 @@ function require_in($cn, $vars) {
     }
     return true;
 }
-if (require_in($_POST, array("name", "nonce", "score", "duration")) &&
+if (require_in($_POST, array("name", "nonce", "score", "duration", "cs")) &&
     require_in($_SESSION, array("nonce", "nonce_expires")) &&
+    checksum_is_valid($_POST["cs"]) &&
     $_SESSION["nonce_expires"] > time() &&
     $_SESSION["nonce"] === $_POST["nonce"] &&
     intval($_POST["score"]) > 0
@@ -38,7 +48,7 @@ if (require_in($_POST, array("name", "nonce", "score", "duration")) &&
         urlencode($_POST["snap"])
         );
     $cs = checksum($qs);
-    if ($cs === intval($_POST["cs"])) {
+    if (checksum_is_valid($cs) && $cs === intval($_POST["cs"])) {
         list($meta, $snapdata) = explode(",", $_POST["snap"], 2);
         if ($img = imagecreatefromstring(base64_decode($snapdata))) {
             $snap_fs = sprintf("%s/%s.jpg", SNAPS_FS, $_POST["nonce"]);
@@ -57,6 +67,8 @@ if (require_in($_POST, array("name", "nonce", "score", "duration")) &&
         natsort($scores);
         $scores = array_reverse($scores);
         file_put_contents(OUTFILE, implode(PHP_EOL, $scores));
+    } else {
+        error_log("cs mismatch " . $cs . ", " . $_POST["cs"]);
     }
 }
 header("Content-Type: application/json");
