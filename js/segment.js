@@ -1,6 +1,6 @@
 
 /*global define: true*/
-define("segment", ["canvas", "point", "rectangle"], function (Canvas, Point, Rectangle) {
+define(["canvas", "point", "rectangle"], function (Canvas, Point, Rectangle) {
     function Segment(canvas) {
         this.canvas = canvas;
         this.rect = new Rectangle(null, Segment.width, Segment.height);

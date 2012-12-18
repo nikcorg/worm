@@ -1,5 +1,5 @@
 /*global define: true*/
-define("score", ["canvas"], function (Canvas) {
+define(["canvas"], function (Canvas) {
     function Score(canvas) {
         this.canvas = canvas;
         this.cache = new Canvas(100, 24);

@@ -1,5 +1,5 @@
 /*global define: true*/
-define("util", function (){
+define(function (){
     function isArray(o) {
         return Object.prototype.toString.call(o) === "[object Array]";
     }

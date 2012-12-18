@@ -1,5 +1,5 @@
 /*global define: true*/
-define("emitter", function () {
+define(function () {
     var w = window, d = document;
     function Emitter() {
     }

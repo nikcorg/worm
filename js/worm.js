@@ -1,5 +1,5 @@
 /*global define: true*/
-define("worm", ["util", "segment", "point"], function (Util, Segment, Point) {
+define(["util", "segment", "point"], function (Util, Segment, Point) {
     function Worm(canvas) {
         this.canvas = canvas;
         this.init();

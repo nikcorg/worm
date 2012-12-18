@@ -1,5 +1,5 @@
 /*global define: true*/
-define("game", ["util", "emitter", "worm", "target", "score"], function (Util, Emitter, Worm, Target, Score) {
+define(["util", "emitter", "worm", "target", "score"], function (Util, Emitter, Worm, Target, Score) {
     var w = window, d = document;
 
     function Game(canvas) {

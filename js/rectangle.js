@@ -1,5 +1,5 @@
 /*global define: true*/
-define("rectangle", function () {
+define(function () {
     function Rectangle(point, width, height) {
         this.pos = point;
         this.width = width;

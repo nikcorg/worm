@@ -1,5 +1,5 @@
 /*global define: true*/
-define("main", ["util", "canvas", "game"], function (Util, Canvas, Game) {
+define(["util", "canvas", "game"], function (Util, Canvas, Game) {
     var w = window, d = document;
 
     function readableDuration(duration) {

@@ -1,5 +1,5 @@
 /*global define: true*/
-define("point", function () {
+define(function () {
     function Point(x, y) {
         this.x = x || this.x;
         this.y = y || this.y;

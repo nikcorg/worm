@@ -1,5 +1,5 @@
 /*global define: true*/
-define("canvas", ["emitter"], function (Emitter) {
+define(["emitter"], function (Emitter) {
     var w = window, d = document;
 
     var requestAnimFrame = (function(){

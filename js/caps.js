@@ -1,5 +1,5 @@
 /*global define: true*/
-define("caps", ["util"], function (Util) {
+define(["util"], function (Util) {
     "use strict";
     function isset(o) {
         return o != null;

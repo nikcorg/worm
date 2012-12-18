@@ -1,5 +1,5 @@
 /*global define: true*/
-define("target", ["canvas", "point", "rectangle"], function (Canvas, Point, Rectangle) {
+define(["canvas", "point", "rectangle"], function (Canvas, Point, Rectangle) {
     function Target(canvas) {
         this.canvas = canvas;
         this.randomize();
